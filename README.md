@@ -1,5 +1,5 @@
 
-                                                  Supermarket Data Pipeline
+                                               Supermarket Data Pipeline
 
 This project implements a simple local data engineering pipeline using Python, DuckDB, SQL and Streamlit. 
 The goal of the project is to process supermarket sales data, store the processed data in a database and 
