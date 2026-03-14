@@ -21,6 +21,53 @@ The final dataset is loaded into a DuckDB database file called warehouse.duckdb.
 table called sales_data is created or replaced each time the pipeline runs. SQL queries are then used to 
 calculate metrics such as average sales, average product cost and total sales.
 
+                 +------------------------------+
+                 |   Source 1: SuperMarket      |
+                 |   Analysis.csv               |
+                 |   (sales transactions)       |
+                 +--------------+---------------+
+                                |
+                                |
+                                v
+                 +------------------------------+
+                 |   Python ETL Pipeline        |
+                 |   run_pipeline.py            |
+                 |                              |
+                 | - read CSV                   |
+                 | - clean columns              |
+                 | - merge datasets             |
+                 | - calculate profit           |
+                 +--------------+---------------+
+                                ^
+                                |
+                                |
+                 +--------------+---------------+
+                 |   Source 2: product_costs.csv|
+                 |   (cost per product line)    |
+                 +------------------------------+
+
+                                |
+                                v
+
+                 +------------------------------+
+                 |   DuckDB Data Warehouse      |
+                 |   warehouse.duckdb           |
+                 |                              |
+                 |   Table: sales_data          |
+                 +--------------+---------------+
+                                |
+                   +------------+------------+
+                   |                         |
+                   v                         v
+      +--------------------------+   +--------------------------+
+      | SQL Analytics Layer      |   | Streamlit Dashboard      |
+      | queries.sql              |   | dashboard.py             |
+      |                          |   |                          |
+      | - AVG(sales)             |   | - KPI cards              |
+      | - AVG(cost_price)        |   | - sales charts           |
+      | - sales by product line  |   | - filters               |
+      | - profit by city         |   | - business insights     |
+      +--------------------------+   +--------------------------+
 How to Run the Project
 
 1. Clone the repository and open the project folder.
