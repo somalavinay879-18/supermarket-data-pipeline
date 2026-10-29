@@ -141,3 +141,23 @@ python run_pipeline.py
 
 You should see the row count increase and the metrics update. Refresh the Streamlit dashboard and the 
 values will update automatically, confirming that the pipeline processes new data correctly.
+
+
+Automated Tests and Data Checks
+
+The pipeline logic lives in pipeline.py (run_pipeline.py is the command line entry point). Before anything
+is written to the warehouse, the pipeline checks the input data and stops with a clear message if a rule
+is broken: required columns exist, invoice ids are unique, quantity and sales are above 0, every product
+line has exactly one cost price, and the merge does not change the number of rows.
+
+Run the tests:
+
+pip install -r requirements-dev.txt
+pytest -q
+
+The tests use small made-up files, so they run in about a second. They check the profit calculation by hand,
+each data check, the handling of the invisible BOM character at the start of the sales file, and a full
+run into a temporary DuckDB file. GitHub Actions runs the same tests on every push.
+
+Note: in this dataset the column sales already includes the 5 % tax, so profit = sales - quantity * cost_price
+is a profit after tax is added to the price. The formula is kept as in the first version.
