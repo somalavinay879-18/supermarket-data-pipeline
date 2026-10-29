@@ -11,7 +11,21 @@ st.markdown("Local dashboard powered by DuckDB")
 # -----------------------------
 # LOAD DATA
 # -----------------------------
-conn = duckdb.connect("warehouse.duckdb")
+from pathlib import Path
+
+from pipeline import run
+
+
+@st.cache_resource
+def ensure_warehouse():
+    """Build warehouse.duckdb from the CSV files if it does not exist (e.g. on Streamlit Cloud)."""
+    if not Path("warehouse.duckdb").exists():
+        run()
+    return True
+
+
+ensure_warehouse()
+conn = duckdb.connect("warehouse.duckdb", read_only=True)
 df = conn.execute("SELECT * FROM sales_data").fetchdf()
 conn.close()
 
